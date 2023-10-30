@@ -13,8 +13,11 @@ selections:
     - partition_for_var_log
     - partition_for_var_log_audit
     - partition_for_home
-    - package_ntp_installed
     - package_ntpdate_removed
+    # need one time sync server installed. timesyncd is the default
+    - '!package_chrony_installed'
+    - '!package_ntp_installed'
+    - package_timesyncd_installed
     - sshd_idle_timeout_value=5_minutes
     - sshd_set_idle_timeout
     - sshd_disable_root_login

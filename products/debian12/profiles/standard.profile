@@ -15,7 +15,6 @@ selections:
     - partition_for_home
     - package_audit_installed
     - package_cron_installed
-    - package_ntp_installed
     - package_rsyslog_installed
     - package_telnetd_removed
     - package_inetutils-telnetd_removed
@@ -24,8 +23,14 @@ selections:
     - package_ntpdate_removed
     - service_auditd_enabled
     - service_cron_enabled
-    - service_ntp_enabled
     - service_rsyslog_enabled
+    # need at least 1 time sync server installed and running
+    - '!package_chrony_installed'
+    - '!package_ntp_installed'
+    - package_timesyncd_installed
+    - service_chronyd_enabled
+    - service_timesyncd_enabled
+    - service_ntp_enabled
     - sshd_idle_timeout_value=5_minutes
     - sshd_set_idle_timeout
     - sshd_disable_root_login

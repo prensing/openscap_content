@@ -15,4 +15,7 @@ selections:
     - package_audit_installed
     - package_cron_installed
     - service_auditd_enabled
+    # need one time sync server running
+    - service_chronyd_enabled
+    - service_timesyncd_enabled
     - service_ntp_enabled
