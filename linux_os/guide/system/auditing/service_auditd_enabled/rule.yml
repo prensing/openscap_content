@@ -2,6 +2,12 @@ documentation_complete: true
 
 title: 'Enable auditd Service'
 
+{{% if "ubuntu" in product or "debian" in product %}}
+    {{% set package_name="auditd" %}}
+{{% else %}}
+    {{% set package_name="audit" %}}
+{{% endif %}}
+
 description: |-
     The <tt>auditd</tt> service is an essential userspace component of
     the Linux Auditing System, as it is responsible for writing audit records to
@@ -74,12 +80,7 @@ ocil: |-
 fixtext: |-
     {{{ fixtext_service_enabled("auditd") }}}
 
-{{% if 'ubuntu' not in product and 'debian' not in product %}}
-srg_requirement: '{{{ srg_requirement_service_enabled("audit") }}}'
-{{% else %}}
 srg_requirement: '{{{ srg_requirement_service_enabled("auditd") }}}'
-{{% endif %}}
-
 
 platform: package[audit]
 
@@ -87,10 +88,4 @@ template:
     name: service_enabled
     vars:
         servicename: auditd
-        packagename: audit
-        packagename@debian10: auditd
-        packagename@debian11: auditd
-        packagename@ubuntu1604: auditd
-        packagename@ubuntu1804: auditd
-        packagename@ubuntu2004: auditd
-        packagename@ubuntu2204: auditd
+        packagename: {{{ package_name }}}

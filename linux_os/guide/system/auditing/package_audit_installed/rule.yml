@@ -2,7 +2,13 @@ documentation_complete: true
 
 title: 'Ensure the audit Subsystem is Installed'
 
-description: 'The audit package should be installed.'
+{{% if "ubuntu" in product or "debian" in product %}}
+    {{% set package_name="auditd" %}}
+{{% else %}}
+    {{% set package_name="audit" %}}
+{{% endif %}}
+
+description: 'The {{{ package_name }}} package should be installed.'
 
 rationale: 'The auditd service is an access monitoring and accounting daemon, watching system calls to audit any access, in comparison with potential local access control policy such as SELinux policy.'
 
@@ -40,29 +46,18 @@ references:
     stigid@sle15: SLES-15-030650
     stigid@ubuntu2004: UBTU-20-010182
 
-ocil_clause: 'the audit package is not installed'
+ocil_clause: 'the {{{ package_name }}} package is not installed'
 
-ocil: '{{{ ocil_package("audit") }}}'
+ocil: '{{{ ocil_package(package_name) }}}'
 
 fixtext: |-
     Install the audit service (if the audit service is not already installed) with the following command:
 
-    {{{ package_install("audit") }}}
+    {{{ package_install(package_name) }}}
 
-{{% if 'ubuntu' not in product and 'debian' not in product %}}
-srg_requirement: '{{{ srg_requirement_package_installed("audit") }}}'
-{{% else %}}
-srg_requirement: '{{{ srg_requirement_package_installed("auditd") }}}'
-{{% endif %}}
+srg_requirement: '{{{ srg_requirement_package_installed(package_name) }}}'
 
 template:
     name: package_installed
     vars:
-        pkgname: audit
-        pkgname@ubuntu1604: auditd
-        pkgname@ubuntu1804: auditd
-        pkgname@ubuntu2004: auditd
-        pkgname@ubuntu2204: auditd
-        pkgname@debian10: auditd
-        pkgname@debian11: auditd
-        pkgname@debian12: auditd
+        pkgname: {{{ package_name }}}
